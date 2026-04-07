@@ -1,14 +1,13 @@
 services:
   backend:
-    container_name: python-backend
+    container_name: backend
     build: ./backend
     restart: unless-stopped
     cap_drop:
       - ALL
     security_opt:
       - no-new-privileges:true
-    # ports:
-    #   - 80:8080
+
   nginx:
     container_name: nginx-reverse-proxy
     image: nginxinc/nginx-unprivileged:1.29-alpine-slim
@@ -20,12 +19,6 @@ services:
       - 80:8080
     restart: unless-stopped
     user: "1000:1000"
-    healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:80" ]
-      interval: 30s
-      timeout: 5s
-      retries: 3
-      start_period: 10s
     cap_drop:
       - ALL
     security_opt:
